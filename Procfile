@@ -1,1 +1,1 @@
-web: java -Djava.library.path=/lib -jar myapp.jar
+web: java -Djava.library.path=/lib
