@@ -1,1 +1,1 @@
-web: java -Djava.library.path=/lib
+web: java -Djava.library.path=/lib -jar target/PlaceHolder-0.0.1-SNAPSHOT.jar
