@@ -1,0 +1,1 @@
+web: java -Djava.library.path=/path/to/library
