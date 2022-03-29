@@ -1,7 +1,5 @@
 package Placeholder.backend;
 
-
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -13,6 +11,31 @@ import java.util.List;
 
 @RestController
 public class StudentController {
+
+    @GetMapping("/getAllStudents")
+    public List<Student> getAllStudents(){
+
+        SessionFactory factory = new Configuration().
+                configure("hibernate.cfg.xml").
+                addAnnotatedClass(Student.class).buildSessionFactory();
+
+        Session session = factory.getCurrentSession();
+
+        List<Student> allStudents = null;
+
+        try{
+            session.beginTransaction();
+            allStudents = session.createQuery("from Student s").getResultList();
+            System.out.println(allStudents);
+            session.getTransaction().commit();
+        }
+        finally {
+            factory.close();
+        }
+
+        return allStudents;
+    }
+
 
     // /greeting?name=Dan
     @GetMapping("/getStudent")
@@ -33,7 +56,7 @@ public class StudentController {
 
         try{
             session.beginTransaction();
-            List<Student> allStudents = session.createQuery("from Student s WHERE s.id = "+id).list();
+            List<Student> allStudents = session.createQuery("from Student s WHERE s.id = "+id).getResultList();
             System.out.println(allStudents);
             session.getTransaction().commit();
             if(allStudents.size() > 0){
