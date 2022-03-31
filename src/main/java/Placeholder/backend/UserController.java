@@ -169,9 +169,9 @@ public class UserController {
     }
 
     @PatchMapping("/user/updateUser")
-    public String updateUser(@RequestBody User user){
+    public int updateUser(@RequestBody User user){
         if(user.getId() == 0){
-            return "400";
+            return 400;
         }
         SessionFactory factory = createFactory();
 
@@ -186,12 +186,12 @@ public class UserController {
         }
         catch (Exception e){
             factory.close();
-            return e.toString();
+            return 400;
         }
         finally {
             factory.close();
         }
-        return "200";
+        return 200;
     }
 
     @GetMapping("/user/searchUser")
@@ -219,10 +219,10 @@ public class UserController {
     }
 
     @PatchMapping("/user/updatePassword")
-    public String updatePassword(@RequestParam(value = "cs_mail",defaultValue = "") String cs_mail, @RequestParam(value = "old_password",defaultValue = "") String old_password, @RequestParam(value = "new_password",defaultValue = "")String new_password){
+    public int updatePassword(@RequestParam(value = "cs_mail",defaultValue = "") String cs_mail, @RequestParam(value = "old_password",defaultValue = "") String old_password, @RequestParam(value = "new_password",defaultValue = "")String new_password){
 
         if(new_password.equals("") ||old_password.equals("")){
-            return "400";
+            return 400;
         }
 
         SessionFactory factory = createFactory();
@@ -235,7 +235,7 @@ public class UserController {
             session.beginTransaction();
             List<User> users= session.createQuery(String.format("from User u WHERE u.user_password = '%s' and u.cs_mail = '%s'",hashedPassword,cs_mail)).getResultList();
             if(users.size() == 0){
-                return "400";
+                return 400;
             }
             user = users.get(0);
             user.setUser_password(Integer.toString(new_password.hashCode()));
@@ -243,13 +243,13 @@ public class UserController {
 
         }
         catch (Exception e){
-            return e.toString();
+            return 400;
         }
         finally {
             factory.close();
         }
 
-        return "200";
+        return 200;
     }
 
 
