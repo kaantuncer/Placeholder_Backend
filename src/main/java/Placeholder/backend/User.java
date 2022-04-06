@@ -1,9 +1,6 @@
 package Placeholder.backend;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="user")
@@ -41,6 +38,9 @@ public class User {
     @Column(name="profile_pic_path")
     private String profile_pic_path;
 
+    @Transient()
+    private boolean is_connected;
+
     public User(){}
 
     public int getId() {
@@ -63,11 +63,23 @@ public class User {
         this.link = link;
         this.alt_mail = alt_mail;
         this.profile_pic_path = profile_pic_path;
+        this.is_connected = false;
     }
 
-
-    public String getfull_name() {
+    public String getFull_name() {
         return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
+
+    public boolean isIs_connected() {
+        return is_connected;
+    }
+
+    public void setIs_connected(boolean is_connected) {
+        this.is_connected = is_connected;
     }
 
     public String getUser_password() {
@@ -76,10 +88,6 @@ public class User {
 
     public void setUser_password(String user_password) {
         this.user_password = user_password;
-    }
-
-    public void setfull_name(String full_name) {
-        this.full_name = full_name;
     }
 
 
