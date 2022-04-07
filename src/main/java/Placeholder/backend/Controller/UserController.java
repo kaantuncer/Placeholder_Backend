@@ -4,10 +4,12 @@ import Placeholder.backend.DAO.UserDAO;
 import Placeholder.backend.Model.User;
 
 
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -95,6 +97,16 @@ public class UserController {
         }
 
         return UserDAO.updateUserType(user_type,current_user_id);
+    }
+    @GetMapping("/user/getUsersConnected")
+    public static List<User> getUsersConnected(@RequestParam (value = "current_user_id",defaultValue = "")String current_user_id){
+
+
+        if(current_user_id.equals("")){
+            return null;
+        }
+        return UserDAO.getUsersConnected(current_user_id);
+
     }
 
 

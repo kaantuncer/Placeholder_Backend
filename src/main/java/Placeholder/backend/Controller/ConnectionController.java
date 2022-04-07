@@ -21,7 +21,7 @@ public class ConnectionController {
     }
 
     @GetMapping("/connection/checkConnection")
-    public static boolean checkConnection(@RequestParam(value = "user1_id",defaultValue = "") String user1_id ,@RequestParam(value = "user2_id",defaultValue = "") String user2_id){
+    public boolean checkConnection(@RequestParam(value = "user1_id",defaultValue = "") String user1_id ,@RequestParam(value = "user2_id",defaultValue = "") String user2_id){
 
         if(user1_id.equals("") || user2_id.equals("")){
             return false;
@@ -32,7 +32,7 @@ public class ConnectionController {
     }
 
     @DeleteMapping("/connection/removeConnection")
-    public static int removeConnection(@RequestParam(value = "user1_id",defaultValue = "") String user1_id ,@RequestParam(value = "user2_id",defaultValue = "") String user2_id){
+    public int removeConnection(@RequestParam(value = "user1_id",defaultValue = "") String user1_id ,@RequestParam(value = "user2_id",defaultValue = "") String user2_id){
 
         if(user1_id.equals("") || user2_id.equals("")){
             return 400;
@@ -44,7 +44,7 @@ public class ConnectionController {
     }
 
     @DeleteMapping("/connection/deleteAllConnections")
-    public static int removeAllConnections(@RequestParam(value = "user_id",defaultValue = "") String user_id){
+    public int removeAllConnections(@RequestParam(value = "user_id",defaultValue = "") String user_id){
 
         if(user_id.equals("")){
             return 400;
