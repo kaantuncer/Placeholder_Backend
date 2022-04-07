@@ -1,4 +1,4 @@
-package Placeholder.backend;
+package Placeholder.backend.Model;
 
 import javax.persistence.*;
 

@@ -1,19 +1,19 @@
-package Placeholder.backend;
+package Placeholder.backend.DAO;
 
+import Placeholder.backend.Controller.ConnectionController;
+import Placeholder.backend.Model.Connection;
+import Placeholder.backend.Model.User;
 import com.google.gson.Gson;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@RestController
-public class UserController {
+public class UserDAO {
 
     public static SessionFactory createFactory(){
         return new Configuration().
@@ -22,12 +22,7 @@ public class UserController {
                 buildSessionFactory();
     }
 
-    @PostMapping("/user/createUser")
-    public int createUser(@RequestBody User user){
-        System.out.println(user);
-        if(user.getUser_password() == null){
-            return 400;
-        }
+    public static int createUser(User user){
         user.setUser_password(Integer.toString(user.getUser_password().hashCode()));
 
         SessionFactory factory = createFactory();
@@ -54,15 +49,7 @@ public class UserController {
         return 200;
     }
 
-    @GetMapping("/user/login")
-    public User login(@RequestParam(value = "cs_mail",defaultValue = "") String cs_mail, @RequestParam(value = "user_password",defaultValue = "")String user_password){
-
-        System.out.println(cs_mail);
-        System.out.println(user_password);
-        if(cs_mail.equals("") || user_password.equals("")){
-
-            return null;
-        }
+    public static User login(String cs_mail, String user_password){
 
         SessionFactory factory = createFactory();
         Session session = factory.getCurrentSession();
@@ -90,12 +77,7 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/user/getUser")
-    public static User getUser(@RequestParam(value = "current_user_id",defaultValue = "") String current_user_id ,@RequestParam(value = "requested_id",defaultValue = "") String requested_id){
-
-        if(current_user_id.equals("") || requested_id.equals("")){
-            return null;
-        }
+    public static User getUser(String current_user_id ,String requested_id){
 
         SessionFactory factory = createFactory();
         Session session = factory.getCurrentSession();
@@ -127,9 +109,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/user/getAllUsers")
-    public List<User> getAllUsers(){
-
+    public static List<User> getAllUsers(){
         SessionFactory factory = createFactory();
         Session session = factory.getCurrentSession();
 
@@ -150,8 +130,7 @@ public class UserController {
         return allUsers;
     }
 
-    @DeleteMapping("/user/deleteUser")
-    public int deleteUser(@RequestParam(value = "current_user_id") String current_user_id){
+    public static int deleteUser(String current_user_id){
 
         SessionFactory factory = createFactory();
         Session session = factory.getCurrentSession();
@@ -175,11 +154,8 @@ public class UserController {
 
     }
 
-    @PatchMapping("/user/updateUser")
-    public int updateUser(@RequestBody User user){
-        if(user.getId() == 0){
-            return 400;
-        }
+    public static int updateUser(User user){
+
         SessionFactory factory = createFactory();
 
         Session session = factory.getCurrentSession();
@@ -201,8 +177,7 @@ public class UserController {
         return 200;
     }
 
-    @GetMapping("/user/searchUser")
-    public List<User> searchUser(@RequestParam (value = "current_user_id",defaultValue = "")String current_user_id, @RequestParam (value = "query",defaultValue = "")String query){
+    public static List<User> searchUser(String current_user_id, String query){
 
         SessionFactory factory = createFactory();
         Session session = factory.getCurrentSession();
@@ -244,12 +219,7 @@ public class UserController {
 
     }
 
-    @PatchMapping("/user/updatePassword")
-    public int updatePassword(@RequestParam(value = "cs_mail",defaultValue = "") String cs_mail, @RequestParam(value = "old_password",defaultValue = "") String old_password, @RequestParam(value = "new_password",defaultValue = "")String new_password){
-
-        if(new_password.equals("") ||old_password.equals("")){
-            return 400;
-        }
+    public static int updatePassword(String cs_mail, String old_password, String new_password){
 
         SessionFactory factory = createFactory();
         Session session = factory.getCurrentSession();
@@ -278,11 +248,8 @@ public class UserController {
         return 200;
     }
 
-    @PatchMapping("/user/updateUserType")
-    public int updateUserType(@RequestParam(value = "user_type",defaultValue = "0") String user_type, @RequestParam (value = "current_user_id",defaultValue = "")String current_user_id){
-        if(current_user_id.equals("")){
-            return 400;
-        }
+    public static int updateUserType(String user_type, String current_user_id){
+
         SessionFactory factory = createFactory();
         Session session = factory.getCurrentSession();
 
@@ -301,7 +268,6 @@ public class UserController {
         }
         return 200;
     }
-
 
 
 

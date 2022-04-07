@@ -1,4 +1,4 @@
-package Placeholder.backend;
+package Placeholder.backend.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
