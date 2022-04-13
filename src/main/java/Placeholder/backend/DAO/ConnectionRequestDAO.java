@@ -1,7 +1,6 @@
 package Placeholder.backend.DAO;
 
 import Placeholder.backend.Model.ConnectionRequest;
-import Placeholder.backend.Model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

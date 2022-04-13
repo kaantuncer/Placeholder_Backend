@@ -1,11 +1,9 @@
 package Placeholder.backend.Controller;
 
 import Placeholder.backend.DAO.ConnectionDAO;
-import Placeholder.backend.DAO.ConnectionRequestDAO;
 import Placeholder.backend.Model.Connection;
 
 
-import Placeholder.backend.Model.ConnectionRequest;
 import Placeholder.backend.Util.DAOFunctions;
 import org.springframework.web.bind.annotation.*;
 
