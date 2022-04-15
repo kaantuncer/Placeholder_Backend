@@ -36,13 +36,12 @@ public class UserController {
     }
 
     @GetMapping("/user/login")
-    public Object login(@RequestBody  HashMap<String, String> body){
+    public Object login(@RequestParam (value = "cs_mail",defaultValue = "")String cs_mail, @RequestParam (value = "user_password",defaultValue = "")String user_password){
 
-        if(!body.containsKey("cs_mail") || !body.containsKey("user_password") ||
-                body.get("cs_mail").equals("") || body.get("user_password").equals("")){
+        if(cs_mail.equals("") || user_password.equals("")){
             return DAOFunctions.getResponse(400,"",null);
         }
-        User u = UserDAO.login(body.get("cs_mail"),body.get("user_password"));
+        User u = UserDAO.login(cs_mail,user_password);
 
         if(u != null){
             return DAOFunctions.getResponse(200,"user",u);
