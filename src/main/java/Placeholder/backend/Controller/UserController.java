@@ -67,19 +67,18 @@ public class UserController {
 
     }
     @GetMapping("/user/getProfileData")
-    public Object getProfileData(@RequestBody  HashMap<String, String> body){
+    public Object getProfileData(@RequestParam(value = "requested_id",defaultValue = "") String requested_id, @RequestParam(value = "current_user_id",defaultValue = "") String current_user_id){
 
-        if(!body.containsKey("current_user_id") || !body.containsKey("requested_id") ||
-                body.get("current_user_id").equals("") || body.get("requested_id").equals("")){
+        if(requested_id.equals("") || current_user_id.equals("")){
             return DAOFunctions.getResponse(400,"",null);
         }
 
-        HashMap<String,Object> profileData = UserDAO.getProfileData(body.get("current_user_id"),body.get("requested_id"));
+        HashMap<String,Object> profileData = UserDAO.getProfileData(current_user_id,requested_id);
         if(profileData == null){
             return DAOFunctions.getResponse(400,"",null);
         }
-        if(!body.get("current_user_id").equals(body.get("requested_id"))  && !(boolean)profileData.get("connected")){
-            profileData.put("connection_request_code",ConnectionRequestDAO.checkRequest(body.get("current_user_id"),body.get("requested_id")));
+        if(!current_user_id.equals(requested_id)  && !(boolean)profileData.get("connected")){
+            profileData.put("connection_request_code",ConnectionRequestDAO.checkRequest(current_user_id,requested_id));
 
         }
         return DAOFunctions.getResponseWithMap(200, profileData);
