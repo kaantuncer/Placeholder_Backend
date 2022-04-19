@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping("/user/createUser")
     public Object createUser(@RequestBody  Object rawBody){
-        JsonParser jsonParser = new JsonParser();
+        System.out.println(rawBody+"\n"+"!!!!!\n");
         Gson gson = new Gson();
         String jsonStr = gson.toJson(rawBody);
         HashMap<String, String> body = new Gson().fromJson(
