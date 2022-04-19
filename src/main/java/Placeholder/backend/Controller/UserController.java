@@ -7,6 +7,10 @@ import Placeholder.backend.Model.User;
 
 
 import Placeholder.backend.Util.DAOFunctions;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,7 +22,13 @@ import java.util.List;
 public class UserController {
 
     @PostMapping("/user/createUser")
-    public Object createUser(@RequestBody  HashMap<String, String> body){
+    public Object createUser(@RequestBody  Object rawBody){
+        JsonParser jsonParser = new JsonParser();
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(rawBody);
+        HashMap<String, String> body = new Gson().fromJson(
+                jsonStr, new TypeToken<HashMap<String, String>>() {}.getType()
+        );
         System.out.println(body+"\n"+"\n"+"\n"+"\n"+"\n");
         if(!body.containsKey("user_password") || !body.containsKey("user_type") || !body.containsKey("cs_mail") || !body.containsKey("full_name") ||
                 body.get("user_password") == null || body.get("user_type") == null || body.get("cs_mail") == null || body.get("full_name") == null || !body.get("cs_mail").endsWith("@cs.hacettepe.edu.tr")){
