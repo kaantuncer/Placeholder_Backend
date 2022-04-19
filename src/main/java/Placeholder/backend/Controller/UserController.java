@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/user/createUser")
     public Object createUser(@RequestBody  HashMap<String, String> body){
-        System.out.println(body);
+        System.out.println(body+"\n"+"\n"+"\n"+"\n"+"\n");
         if(!body.containsKey("user_password") || !body.containsKey("user_type") || !body.containsKey("cs_mail") || !body.containsKey("full_name") ||
                 body.get("user_password") == null || body.get("user_type") == null || body.get("cs_mail") == null || body.get("full_name") == null || !body.get("cs_mail").endsWith("@cs.hacettepe.edu.tr")){
             return DAOFunctions.getResponse(400,"",null);
