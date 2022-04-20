@@ -5,6 +5,7 @@ import Placeholder.backend.Model.Tag;
 import Placeholder.backend.Util.DAOFunctions;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -34,10 +35,17 @@ public class TagController {
 
     @PatchMapping("/tag/updateTag")
     public Object updateTag(@RequestBody Tag tag){
-
-        if(tag.getId() == 0 || tag.getTag_name().equals("")){
+        if(tag.getId() == 0 || tag.getTag_name() == null || tag.getTag_name().equals("")){
             return DAOFunctions.getResponse(400,"",null);
         }
         return DAOFunctions.getResponse(TagDAO.updateTag(tag),"",null);
+    }
+
+    @DeleteMapping("/tag/deleteTag")
+    public Object deleteTag(@RequestBody HashMap<String, String> body){
+        if(!body.containsKey("id") || body.get("id").equals("")){
+            return DAOFunctions.getResponse(400,"",null);
+        }
+        return DAOFunctions.getResponse(TagDAO.deleteTag(body.get("id")),"",null);
     }
 }

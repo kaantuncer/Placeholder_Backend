@@ -2,6 +2,7 @@ package Placeholder.backend.Controller;
 
 import Placeholder.backend.DAO.ConnectionDAO;
 import Placeholder.backend.DAO.ConnectionRequestDAO;
+import Placeholder.backend.DAO.PostDAO;
 import Placeholder.backend.DAO.UserDAO;
 import Placeholder.backend.Model.User;
 
@@ -81,6 +82,7 @@ public class UserController {
             profileData.put("connection_request_code",ConnectionRequestDAO.checkRequest(current_user_id,requested_id));
 
         }
+        profileData.put("posts", PostDAO.getAllPostsOfAUser(requested_id));
         return DAOFunctions.getResponseWithMap(200, profileData);
 
     }
