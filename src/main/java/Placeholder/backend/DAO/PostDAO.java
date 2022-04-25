@@ -274,6 +274,8 @@ public class PostDAO {
             session.createQuery("delete from Post p where p.id = "+id).executeUpdate();
             session.getTransaction().commit();
             PostTagDAO.deleteAllTagsFromPost(id);
+            deleteAllLikesFromPost(id);
+            deleteAllCommentsFromPost(id);
         }
         catch (Exception e){
             System.out.println(e);
@@ -460,6 +462,48 @@ public class PostDAO {
 
         return 200;
 
+    }
+
+    public static int deleteAllLikesFromPost(String post_id){
+
+        SessionFactory factory = createFactory();
+        Session session = factory.getCurrentSession();
+
+        try{
+            session.beginTransaction();
+            session.createQuery("delete from Like l where l.post_id = "+post_id).executeUpdate();
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return 400;
+        }
+        finally {
+            factory.close();
+        }
+
+        return 200;
+    }
+
+    public static int deleteAllCommentsFromPost(String post_id){
+
+        SessionFactory factory = createFactory();
+        Session session = factory.getCurrentSession();
+
+        try{
+            session.beginTransaction();
+            session.createQuery("delete from Comment c where c.post_id = "+post_id).executeUpdate();
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return 400;
+        }
+        finally {
+            factory.close();
+        }
+
+        return 200;
     }
 
 
