@@ -225,7 +225,7 @@ public class PostDAO {
         try{
             session.beginTransaction();
             session.save(post);
-            posts = session.createQuery(String.format("from Post p WHERE p.post_body = '%s'",post.getPost_body())).getResultList();
+            posts = session.createQuery(String.format("from Post p WHERE p.user_id = '%s' and p.post_share_date = '%s'",post.getUser_id(),post.getPost_share_date())).getResultList();
             if(posts.size() == 0){
                 session.getTransaction().commit();
                 return null;
