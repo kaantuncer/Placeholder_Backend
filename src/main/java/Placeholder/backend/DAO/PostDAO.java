@@ -464,6 +464,25 @@ public class PostDAO {
 
     }
 
+    public static int deleteAllPostsOfAUser(String user_id){
+
+        try{
+            List<Object> posts = getAllPostsOfAUser(user_id);
+            for(Object o : posts){
+                HashMap<String,Object> mapObject = ( HashMap<String,Object>) o;
+                Post p =(Post) mapObject.get("post");
+                deletePost(Integer.toString(p.getId()));
+            }
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return 400;
+        }
+
+        return 200;
+    }
+
     public static int deleteAllLikesFromPost(String post_id){
 
         SessionFactory factory = createFactory();
