@@ -157,7 +157,7 @@ public class PostController {
     @PostMapping("/post/addComment")
     public Object addComment(@RequestBody Comment comment){
 
-        if(comment.getPost_id() == 0 || comment.getUser_id() == 0 || comment.getBody()== null ||comment.getBody().equals("")){
+        if(comment.getPost_id() == 0 || comment.getUser_id() == 0 || comment.getBody()== null ||comment.getBody().equals("") || comment.getShare_date() == null || comment.getShare_date().equals("")){
             return DAOFunctions.getResponse(400,"",null);
         }
         return DAOFunctions.getResponse(PostDAO.addComment(comment),"",null);
