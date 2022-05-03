@@ -12,6 +12,17 @@ import java.util.*;
 @RestController
 public class PostController {
 
+    @GetMapping("/post/getPost")
+    public Object getPost(@RequestParam(value = "post_id",defaultValue = "") String post_id){
+        Object post = PostDAO.getPost(post_id);
+        if(post != null){
+            return DAOFunctions.getResponse(200,"post",post);
+        }
+        else{
+            return DAOFunctions.getResponse(400,"",null);
+        }
+    }
+
     @GetMapping("/post/getAllPosts")
     public Object getAllPosts(){
         List<Object> allPost = PostDAO.getAllPosts();
