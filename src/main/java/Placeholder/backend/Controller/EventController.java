@@ -1,11 +1,8 @@
 package Placeholder.backend.Controller;
 
 import Placeholder.backend.DAO.EventDAO;
-import Placeholder.backend.DAO.PostDAO;
 import Placeholder.backend.Model.Attend;
 import Placeholder.backend.Model.Event;
-import Placeholder.backend.Model.Like;
-import Placeholder.backend.Model.Post;
 import Placeholder.backend.Util.DAOFunctions;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +14,27 @@ import java.util.List;
 public class EventController {
 
     @GetMapping("/event/getAllEventsOfAUser")
-    public Object getAllPostsOfAUser(@RequestParam(value = "user_id",defaultValue = "") String user_id){
-        if(user_id.equals("")){
+    public Object getAllPostsOfAUser(@RequestParam(value = "requested_user_id",defaultValue = "") String requested_user_id, @RequestParam(value = "current_user_id",defaultValue = "") String current_user_id){
+        if(requested_user_id.equals("") || current_user_id.equals("") ){
             return DAOFunctions.getResponse(400,"",null);
         }
-        List<Object> res = EventDAO.getAllEventsOfAUser(user_id);
+        HashMap<String,Object> res = EventDAO.getAllEventsOfAUser(requested_user_id,current_user_id);
         if(res != null){
-            return DAOFunctions.getResponse(200,"allEvents",res);
+            return DAOFunctions.getResponseWithMap(200,res);
+        }
+        else{
+            return DAOFunctions.getResponse(400,"",null);
+        }
+    }
+
+    @GetMapping("/event/getMainFeed")
+    public Object getMainFeed(@RequestParam(value = "current_user_id",defaultValue = "") String current_user_id){
+        if(current_user_id.equals("")){
+            return DAOFunctions.getResponse(400,"",null);
+        }
+        HashMap<String,Object> res = EventDAO.getMainFeed(current_user_id);
+        if(res != null){
+            return DAOFunctions.getResponseWithMap(200,res);
         }
         else{
             return DAOFunctions.getResponse(400,"",null);
