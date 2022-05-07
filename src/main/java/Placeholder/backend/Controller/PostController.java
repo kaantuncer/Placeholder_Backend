@@ -58,18 +58,18 @@ public class PostController {
 
             Post post = gson.fromJson(postJsonStr,Post.class);
             if(post.getUser_id() == 0 || post.getPost_body() == null || post.getPost_body().equals("") || post.getPost_share_date() == null || post.getPost_share_date().equals("")){
-                return DAOFunctions.getResponse(400,"",null);
+                return DAOFunctions.getResponse(400,"error","Missing Fields");
             }
             post = PostDAO.createPost(post);
 
             if(post == null){
-                return DAOFunctions.getResponse(400,"",null);
+                return DAOFunctions.getResponse(400,"error","Couldn't find the added post");
             }
 
             JsonParser jsonParser = new JsonParser();
             JsonArray jsonArray = (JsonArray) jsonParser.parse(tagsJsonStr);
             if(jsonArray.size() == 0){
-                return DAOFunctions.getResponse(400,"",null);
+                return DAOFunctions.getResponse(400,"error","Json Error");
             }
             ArrayList<PostTag> tagIds = new ArrayList<>();
             for(JsonElement tag: jsonArray) {
@@ -85,7 +85,7 @@ public class PostController {
                 return DAOFunctions.getResponse(200,"post",post);
             }
             else{
-                return DAOFunctions.getResponse(400,"",null);
+                return DAOFunctions.getResponse(400,"error","Internal Error");
             }
         }
         catch (Exception e){
