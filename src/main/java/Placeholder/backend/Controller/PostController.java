@@ -69,7 +69,7 @@ public class PostController {
             JsonParser jsonParser = new JsonParser();
             JsonArray jsonArray = (JsonArray) jsonParser.parse(tagsJsonStr);
             if(jsonArray.size() == 0){
-                return DAOFunctions.getResponse(400,"error","Json Error");
+                return DAOFunctions.getResponse(400,"error","Tag list empty");
             }
             ArrayList<PostTag> tagIds = new ArrayList<>();
             for(JsonElement tag: jsonArray) {
@@ -95,11 +95,37 @@ public class PostController {
     }
 
     @PatchMapping("/post/updatePost")
-    public Object updatePost(@RequestBody Post post){
-        if(post.getPost_body() == null || post.getPost_body().equals("") || post.getId() == 0){
-            return DAOFunctions.getResponse(400,"",null);
+    public Object updatePost(@RequestBody HashMap<String,Object> body){
+        try {
+            Gson gson = new Gson();
+            String postJsonStr = gson.toJson(body.get("post"));
+            String tagsJsonStr = gson.toJson(body.get("tags"));
+
+            Post post = gson.fromJson(postJsonStr, Post.class);
+            if (post.getId() == 0 ||  post.getPost_body() == null || post.getPost_body().equals("")) {
+                return DAOFunctions.getResponse(400, "error", "Missing Fields");
+            }
+
+            JsonParser jsonParser = new JsonParser();
+            JsonArray jsonArray = (JsonArray) jsonParser.parse(tagsJsonStr);
+            if (jsonArray.size() == 0) {
+                return DAOFunctions.getResponse(400, "error", "Tag list empty");
+            }
+            ArrayList<PostTag> tagIds = new ArrayList<>();
+            for (JsonElement tag : jsonArray) {
+                String tagId = gson.fromJson(tag, String.class);
+                PostTag postTag = new PostTag();
+                postTag.setPost_id(post.getId());
+                postTag.setTag_id(Integer.parseInt(tagId));
+                tagIds.add(postTag);
+            }
+            return DAOFunctions.getResponse(PostDAO.updatePost(post,tagIds),"",null);
         }
-        return DAOFunctions.getResponse(PostDAO.updatePost(post),"",null);
+        catch (Exception e){
+            return DAOFunctions.getResponse(400,"error",e);
+
+        }
+
     }
 
     @DeleteMapping("/post/deletePost")
