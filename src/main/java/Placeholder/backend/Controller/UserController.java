@@ -58,8 +58,11 @@ public class UserController {
         u.setUser_password(Integer.toString(body.get("user_password").hashCode()));
         u = UserDAO.createUser(u);
 
-        if(u != null){
+        if(u != null && u.getId() != 0){
             return DAOFunctions.getResponse(200,"user",u);
+        }
+        else if(u.getId() == 0){
+            return DAOFunctions.getResponse(400,"error","Already Registered");
         }
         else{
             return DAOFunctions.getResponse(400,"",null);
