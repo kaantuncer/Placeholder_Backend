@@ -365,6 +365,28 @@ public class EventDAO {
         return allAttend;
     }
 
+    public static int deleteAllEventsOfAUser(String user_id){
+        SessionFactory factory = createFactory();
+        Session session = factory.getCurrentSession();
+
+        List<Event> queryResult ;
+        try{
+            session.beginTransaction();
+            queryResult = session.createQuery(String.format("from Event e WHERE e.user_id = '%s'",user_id)).getResultList();
+            for(Event e : queryResult){
+                deleteEvent(Integer.toString(e.getId()));
+            }
+
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return 400;
+        }
+
+        return 200;
+
+    }
+
 
 
 

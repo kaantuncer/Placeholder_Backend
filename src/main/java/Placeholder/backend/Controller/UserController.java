@@ -1,9 +1,6 @@
 package Placeholder.backend.Controller;
 
-import Placeholder.backend.DAO.ConnectionDAO;
-import Placeholder.backend.DAO.ConnectionRequestDAO;
-import Placeholder.backend.DAO.PostDAO;
-import Placeholder.backend.DAO.UserDAO;
+import Placeholder.backend.DAO.*;
 import Placeholder.backend.Model.User;
 
 
@@ -162,6 +159,8 @@ public class UserController {
         PostDAO.deleteAllPostsOfAUser(body.get("user_id"));
         ConnectionDAO.removeAllConnections(body.get("user_id"));
         ConnectionRequestDAO.removeAllRequests(body.get("user_id"));
+        EventDAO.deleteAllEventsOfAUser(body.get("user_id"));
+        MessageDAO.deleteAllMessagesOfAUser(body.get("user_id"));
         return DAOFunctions.getResponse(UserDAO.deleteUser(body.get("user_id")),"",null);
 
     }
