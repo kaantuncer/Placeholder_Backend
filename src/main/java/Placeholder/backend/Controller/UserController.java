@@ -154,7 +154,7 @@ public class UserController {
         }
         User u = UserDAO.login(body.get("cs_mail"),body.get("user_password"));
         if(u == null){
-            return DAOFunctions.getResponse(400,"",null);
+            return DAOFunctions.getResponse(400,"error","Wrong mail or password");
         }
         PostDAO.deleteAllPostsOfAUser(body.get("user_id"));
         ConnectionDAO.removeAllConnections(body.get("user_id"));
