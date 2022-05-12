@@ -48,16 +48,14 @@ public class EventDAO {
                     continue;
                 }
                 User currentUser = gson.fromJson(jsonArray.get(1),User.class);
-
                 if(!eventIdSet.contains(currentEvent.getId())){
-
                     if(prevEvent != null){
                         HashMap<String,Object> currentEventWithData = new HashMap<>();
                         currentEventWithData.put("event",prevEvent);
                         currentEventWithData.put("participants", currentParticipants);
                         currentEventWithData.put("user",prevUser);
 
-                        if(Integer.toString(currentUser.getId()).equals(currentUserId)){
+                        if(Integer.toString(prevUser.getId()).equals(currentUserId)){
                             eventsOwned.add(currentEventWithData);
                         }
                         else if(participating){
@@ -85,7 +83,6 @@ public class EventDAO {
                     }
                 }
                 catch (Exception e){
-
                 }
 
                 if(participant != null){
@@ -94,8 +91,6 @@ public class EventDAO {
             }
 
             if(prevUser != null){
-
-
                 HashMap<String,Object> currentEventWithData = new HashMap<>();
                 currentEventWithData.put("event",prevEvent);
                 currentEventWithData.put("participants", currentParticipants);
