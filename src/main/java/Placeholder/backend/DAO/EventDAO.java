@@ -39,7 +39,40 @@ public class EventDAO {
 
             boolean participating = false;
 
-            for(Object o : queryResult) {
+            List<Object> sortedQueryResult = new ArrayList<>();
+            List<Integer> eventIds = new ArrayList<>();
+            HashSet<String> objectSet = new HashSet<>();
+
+            for(int i = 0 ; i<queryResult.size();i++){
+                int currentSmallestEventId = Integer.MAX_VALUE;
+                int currentSmallestIndex = -1;
+                String currentJsonStr = "";
+                for(int j = 0; j<queryResult.size();j++){
+                    String jsonStr = gson.toJson(queryResult.get(j));
+                    JsonArray jsonArray = (JsonArray) jsonParser.parse(jsonStr);
+
+                    Event currentEvent = gson.fromJson(jsonArray.get(0), Event.class);
+                    if(sortedQueryResult.size() == 0 && currentSmallestEventId > currentEvent.getId()){
+                        currentSmallestEventId = currentEvent.getId();
+                        currentSmallestIndex = j;
+                        currentJsonStr = jsonStr;
+                    }
+                    else if(sortedQueryResult.size() != 0 && currentSmallestEventId > currentEvent.getId() && currentEvent.getId() >= eventIds.get(eventIds.size()-1) && !objectSet.contains(jsonStr)){
+                        currentSmallestEventId = currentEvent.getId();
+                        currentSmallestIndex = j;
+                        currentJsonStr = jsonStr;
+                    }
+
+                }
+                if(currentSmallestIndex != -1){
+                    sortedQueryResult.add(queryResult.get(currentSmallestIndex));
+                    eventIds.add(currentSmallestEventId);
+                    objectSet.add(currentJsonStr);
+                }
+            }
+
+
+            for(Object o : sortedQueryResult) {
                 String jsonStr = gson.toJson(o);
                 JsonArray jsonArray = (JsonArray) jsonParser.parse(jsonStr);
 
