@@ -42,12 +42,45 @@ public class PostDAO {
             Post prevPost = null;
             User prevUser = null;
 
+            List<Object> sortedQueryResult = new ArrayList<>();
+            List<Integer> postIds = new ArrayList<>();
+            HashSet<String> objectSet = new HashSet<>();
             JsonParser jsonParser = new JsonParser();
-            for(Object o : queryResult){
+
+            for(int i = 0 ; i<queryResult.size();i++){
+                int currentSmallestPostId = Integer.MAX_VALUE;
+                int currentSmallestIndex = -1;
+                String currentJsonStr = "";
+                for(int j = 0; j<queryResult.size();j++){
+                    String jsonStr = gson.toJson(queryResult.get(j));
+                    JsonArray jsonArray = (JsonArray) jsonParser.parse(jsonStr);
+
+                    Post currentPost = gson.fromJson(jsonArray.get(2), Post.class);
+                    if(sortedQueryResult.size() == 0 && currentSmallestPostId > currentPost.getId()){
+                        currentSmallestPostId = currentPost.getId();
+                        currentSmallestIndex = j;
+                        currentJsonStr = jsonStr;
+                    }
+                    else if(sortedQueryResult.size() != 0 && currentSmallestPostId > currentPost.getId() && currentPost.getId() >= postIds.get(postIds.size()-1) && !objectSet.contains(jsonStr)){
+                        currentSmallestPostId = currentPost.getId();
+                        currentSmallestIndex = j;
+                        currentJsonStr = jsonStr;
+                    }
+
+                }
+                if(currentSmallestIndex != -1){
+                    sortedQueryResult.add(queryResult.get(currentSmallestIndex));
+                    postIds.add(currentSmallestPostId);
+                    objectSet.add(currentJsonStr);
+                }
+            }
+            for(Object o : sortedQueryResult){
                 String jsonStr = gson.toJson(o);
                 JsonArray jsonArray = (JsonArray) jsonParser.parse(jsonStr);
 
+
                 Post currentPost = gson.fromJson(jsonArray.get(2), Post.class);
+
 
                 if(!postIdSet.contains(currentPost.getId())){
                     if(postIdSet.size() != 0){
