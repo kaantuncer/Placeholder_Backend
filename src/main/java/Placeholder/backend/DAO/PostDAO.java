@@ -562,6 +562,50 @@ public class PostDAO {
         return 200;
     }
 
+    public static int deleteAllLikesOfAUser(String userId){
+
+        SessionFactory factory = createFactory();
+        Session session = factory.getCurrentSession();
+
+        try{
+            session.beginTransaction();
+            session.createQuery("delete from Like l where l.user_id = "+userId).executeUpdate();
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return 400;
+        }
+        finally {
+            factory.close();
+        }
+
+        return 200;
+    }
+
+    public static int deleteAllCommentsOfAUser(String userId){
+
+        SessionFactory factory = createFactory();
+        Session session = factory.getCurrentSession();
+
+        try{
+            session.beginTransaction();
+            session.createQuery("delete from Comment c where c.user_id = "+userId).executeUpdate();
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return 400;
+        }
+        finally {
+            factory.close();
+        }
+
+        return 200;
+    }
+
+
+
 
 
 }

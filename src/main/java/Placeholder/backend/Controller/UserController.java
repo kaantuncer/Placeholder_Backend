@@ -1,6 +1,7 @@
 package Placeholder.backend.Controller;
 
 import Placeholder.backend.DAO.*;
+import Placeholder.backend.Model.Post;
 import Placeholder.backend.Model.User;
 
 
@@ -157,9 +158,12 @@ public class UserController {
             return DAOFunctions.getResponse(400,"error","Wrong mail or password");
         }
         PostDAO.deleteAllPostsOfAUser(body.get("user_id"));
+        PostDAO.deleteAllLikesOfAUser(body.get("user_id"));
+        PostDAO.deleteAllCommentsOfAUser(body.get("user_id"));
         ConnectionDAO.removeAllConnections(body.get("user_id"));
         ConnectionRequestDAO.removeAllRequests(body.get("user_id"));
         EventDAO.deleteAllEventsOfAUser(body.get("user_id"));
+        EventDAO.deleteAllAttendOfAUser(body.get("user_id"));
         MessageDAO.deleteAllMessagesOfAUser(body.get("user_id"));
         return DAOFunctions.getResponse(UserDAO.deleteUser(body.get("user_id")),"",null);
 
